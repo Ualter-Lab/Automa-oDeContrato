@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gerador de Contrato - Walter Neto</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main class="app">
+    <section class="hero">
+      <div class="brand">
+        <img src="assets/WN.png" alt="Logo WN" />
+        <div>
+          <p class="eyebrow">Gerador automático</p>
+          <h1>Contrato de prestação de serviço</h1>
+          <p class="sub">Cole o resumo da calculadora, revise os dados e gere o PDF pronto para assinatura.</p>
+        </div>
+      </div>
+      <div class="hero-actions">
+        <button class="btn secondary" id="btnPreview" type="button">Atualizar prévia</button>
+        <button class="btn" id="btnPdf" type="button">Gerar PDF</button>
+      </div>
+    </section>
+
+    <section class="grid">
+      <form id="contractForm" class="panel form-panel">
+        <h2>1. Colar resumo da calculadora</h2>
+        <label class="full">Cole aqui o resumo do orçamento
+          <textarea id="resumoColado" rows="10" placeholder="Cole aqui o resumo gerado pela calculadora..."></textarea>
+        </label>
+        <div class="actions-line">
+          <button class="btn small" id="btnLerResumo" type="button">Ler resumo e preencher contrato</button>
+          <button class="btn small secondary" id="btnLimparResumo" type="button">Limpar resumo</button>
+        </div>
+
+        <h2>2. Dados do contratado</h2>
+        <div class="fields two">
+          <label>Nome completo
+            <input id="prestadorNome" value="Walter Neto" placeholder="Seu nome completo" />
+          </label>
+          <label>CPF
+            <input id="prestadorCpf" placeholder="000.000.000-00" />
+          </label>
+          <label>Telefone
+            <input id="prestadorTelefone" placeholder="(00) 00000-0000" />
+          </label>
+          <label>E-mail
+            <input id="prestadorEmail" value="walteernneetoo@gmail.com" placeholder="seuemail@email.com" />
+          </label>
+        </div>
+
+        <h2>3. Dados do cliente</h2>
+        <div class="fields two">
+          <label>Nome completo / Razão social
+            <input id="clienteNome" placeholder="Nome do cliente ou empresa" />
+          </label>
+          <label>CPF ou CNPJ
+            <input id="clienteDoc" placeholder="CPF/CNPJ" />
+          </label>
+          <label>Telefone
+            <input id="clienteTelefone" placeholder="(00) 00000-0000" />
+          </label>
+          <label>E-mail
+            <input id="clienteEmail" placeholder="cliente@email.com" />
+          </label>
+        </div>
+
+        <h2>4. Projeto</h2>
+        <div class="fields two">
+          <label>Tipo de projeto
+            <input id="tipoProjeto" value="Site Institucional" />
+          </label>
+          <label>Quantidade de páginas
+            <input id="paginas" type="number" value="3" min="1" />
+          </label>
+          <label>Prazo de entrega
+            <input id="prazo" value="5 a 10 dias" />
+          </label>
+          <label>Data do contrato
+            <input id="dataContrato" type="date" />
+          </label>
+        </div>
+
+        <label class="full">Itens inclusos
+          <textarea id="itens" rows="6">Desenvolvimento de site institucional com 3 páginas
+Botão de contato via WhatsApp
+Integração com Google Maps
+Configuração de domínio e hospedagem
+Pacote de atualizações simples por 3 meses</textarea>
+        </label>
+
+        <h2>5. Valores</h2>
+        <div class="fields three">
+          <label>Valor cheio
+            <input id="valorCheio" type="number" step="0.01" value="2170" />
+          </label>
+          <label>Desconto aplicado
+            <input id="descontoValor" type="number" step="0.01" value="270" />
+          </label>
+          <label>Total final
+            <input id="totalFinal" type="number" step="0.01" value="1900" />
+          </label>
+        </div>
+
+        <h2>6. Forma de pagamento</h2>
+        <div class="fields two">
+          <label>Forma escolhida
+            <select id="formaPagamento">
+              <option value="pix">Pix</option>
+              <option value="credito">Cartão de crédito</option>
+              <option value="debito">Cartão de débito</option>
+            </select>
+          </label>
+          <label>Observação da forma de pagamento
+            <input id="pagamentoObs" placeholder="Ex: chave Pix será enviada após assinatura do contrato" />
+          </label>
+        </div>
+        <div class="fields three">
+          <label>1ª parcela (%)
+            <input id="parcela1Percent" type="number" step="0.01" value="40" />
+          </label>
+          <label>2ª parcela (%)
+            <input id="parcela2Percent" type="number" step="0.01" value="30" />
+          </label>
+          <label>3ª parcela (%)
+            <input id="parcela3Percent" type="number" step="0.01" value="30" />
+          </label>
+        </div>
+        <div class="payment-box" id="paymentPreview"></div>
+
+        <h2>7. Observações</h2>
+        <div class="actions-line">
+          <button class="btn small secondary" id="btnGerarObs" type="button">Gerar observações pelos itens</button>
+        </div>
+        <label class="full">Observações adicionais
+          <textarea id="observacoes" rows="7">Alterações futuras simples serão realizadas durante o período de suporte combinado, desde que não alterem completamente a estrutura do projeto.</textarea>
+        </label>
+      </form>
+
+      <aside class="panel preview-panel">
+        <div class="preview-head">
+          <h2>Prévia do contrato</h2>
+          <button class="btn small secondary" id="btnCopy" type="button">Copiar texto</button>
+        </div>
+        <article id="preview" class="contract-preview"></article>
+      </aside>
+    </section>
+  </main>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
